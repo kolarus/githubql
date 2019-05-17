@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# IDE
+.idea/
+frontend-test-task-2.md
+
 # dependencies
 /node_modules
 /.pnp
