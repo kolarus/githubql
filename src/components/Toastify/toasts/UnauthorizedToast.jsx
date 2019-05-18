@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const UnauthorizeedToast = () => (
   <React.Fragment>
@@ -7,7 +6,7 @@ const UnauthorizeedToast = () => (
     {' '}
     <a
       target="_blank"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       href="https://github.com/kolarus/githubql/blob/master/README.md"
     >
         README

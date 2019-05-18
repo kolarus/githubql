@@ -1,0 +1,16 @@
+@import '../../constants/vars';
+
+.msg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - #{$header-height});
+    font-size: 20px;
+    color: $concrete;
+}
+
+.msg a {
+    display: inline-block;
+    padding: 0 5px;
+}

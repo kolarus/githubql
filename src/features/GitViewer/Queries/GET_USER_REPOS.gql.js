@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 const GET_USER_REPOS = gql`
   query($user: String!) {
-    user(login: $user) {
+    user(login: $use) {
         repositories(first: 20) {
             nodes {
                 name,
