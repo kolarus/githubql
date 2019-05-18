@@ -5,7 +5,13 @@ const UnauthorizeedToast = () => (
   <React.Fragment>
     Please provide valid github personal access token! See
     {' '}
-    <Link to="https://github.com/kolarus/githubql/blob/master/README.md">README</Link>
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href="https://github.com/kolarus/githubql/blob/master/README.md"
+    >
+        README
+    </a>
     {' '}
     for more info
   </React.Fragment>
