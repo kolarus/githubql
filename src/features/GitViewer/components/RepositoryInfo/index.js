@@ -1,3 +1,3 @@
-import RepositoryInfo from './RepositoryInfo';
+import QueryRepositoryInfo from './QueryRepositoryInfo';
 
-export default RepositoryInfo;
+export default QueryRepositoryInfo;

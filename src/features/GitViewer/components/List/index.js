@@ -1,3 +1,3 @@
-import List from './List';
+import QueryList from './QueryList';
 
-export default List;
+export default QueryList;

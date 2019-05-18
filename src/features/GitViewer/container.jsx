@@ -14,6 +14,9 @@ class GitViewerContainer extends React.Component {
       searchValue: '',
       userQuery: '',
       searchChangeTimeout: null,
+      fetchDirection: null,
+      activePage: 1,
+      reset: true,
     };
 
     this.state = this.initialState;
@@ -29,7 +32,7 @@ class GitViewerContainer extends React.Component {
   }
 
   onResultSelect(result) {
-    this.setState({ searchValue: result.title, selectedUserLogin: result.login });
+    this.setState({ searchValue: result.title, selectedUserLogin: result.login, reset: false });
   }
 
   applySearchAfterTimeout(searchValue) {
@@ -51,16 +54,31 @@ class GitViewerContainer extends React.Component {
   }
 
   resetSearch() {
-    this.setState({ searchValue: '' });
+    this.setState({ searchValue: '', reset: true });
   }
 
   setSelectedRepo(selectedRepo) {
     this.setState({ selectedRepo: { ...selectedRepo } });
   }
 
+  onPageChange(newActivePage) {
+    const { activePage } = this.state;
+    const fetchDirection = (activePage - newActivePage) > 0
+      ? 'prev'
+      : 'next';
+    this.setState({ fetchDirection, activePage: newActivePage }, () => console.log(this.state));
+  }
+
   render() {
     const {
-      searchValue, userQuery, searchPlaceholder, selectedUserLogin, selectedRepo,
+      searchValue,
+      userQuery,
+      searchPlaceholder,
+      selectedUserLogin,
+      selectedRepo,
+      fetchDirection,
+      activePage,
+      reset,
     } = this.state;
 
     return (
@@ -73,6 +91,10 @@ class GitViewerContainer extends React.Component {
           if (error) { return `Error! ${error.message}`; }
           return (
             <GitViewer
+              reset={reset}
+              onPageChange={(e, { activePage: newActivePage }) => this.onPageChange(newActivePage)}
+              fetchDirection={fetchDirection}
+              activePage={activePage}
               selectedUserLogin={selectedUserLogin}
               setSelectedRepo={newSelectedRepo => this.setSelectedRepo(newSelectedRepo)}
               selectedRepo={selectedRepo}

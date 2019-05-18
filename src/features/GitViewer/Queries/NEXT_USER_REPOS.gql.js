@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
-const GET_USER_REPOS = gql`
-  query($user: String!, $limit: Int!) {
+const NEXT_USER_REPOS = gql`
+  query($user: String!, $limit: Int!, $endCursor: String!) {
     user(login: $user) {
-        repositories(first: $limit, orderBy: {field: UPDATED_AT, direction: DESC}) {
+        repositories(first: $limit, orderBy: {field: UPDATED_AT, direction: DESC, after: $endCursor}) {
             totalCount
             pageInfo {
                 endCursor
@@ -23,4 +23,4 @@ const GET_USER_REPOS = gql`
     }
   }`;
 
-export default GET_USER_REPOS;
+export default NEXT_USER_REPOS;

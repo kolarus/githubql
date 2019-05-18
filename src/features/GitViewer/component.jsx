@@ -5,8 +5,8 @@ import {
 } from 'semantic-ui-react';
 
 import Search from '../../components/Search';
-import List from './components/List';
-import RepositoryInfo from './components/RepositoryInfo';
+import QueryList from './components/List';
+import QueryRepositoryInfo from './components/RepositoryInfo';
 
 const GitViewer = (props) => {
   const {
@@ -22,6 +22,10 @@ const GitViewer = (props) => {
     setSelectedRepo,
     selectedRepo,
     selectedUserLogin,
+    fetchDirection,
+    activePage,
+    onPageChange,
+    reset,
   } = props;
   return (
     <React.Fragment>
@@ -37,7 +41,11 @@ const GitViewer = (props) => {
       <Segment>
         <Grid columns={2} relaxed="very">
           <Grid.Column>
-            <List
+            <QueryList
+              reset={reset}
+              onPageChange={onPageChange}
+              fetchDirection={fetchDirection}
+              activePage={activePage}
               selectedUserLogin={selectedUserLogin}
               setSelectedRepo={setSelectedRepo}
               list={reposList}
@@ -45,7 +53,8 @@ const GitViewer = (props) => {
             />
           </Grid.Column>
           <Grid.Column>
-            <RepositoryInfo
+            <QueryRepositoryInfo
+              reset={reset}
               selectedRepo={selectedRepo}
             />
           </Grid.Column>
