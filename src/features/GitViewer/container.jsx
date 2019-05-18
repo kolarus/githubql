@@ -70,7 +70,7 @@ class GitViewerContainer extends React.Component {
         skip={!userQuery}
       >
         {({ loading, error, data }) => {
-          if (error) return `Error! ${error.message}`;
+          if (error) { return `Error! ${error.message}`; }
           return (
             <GitViewer
               selectedUserLogin={selectedUserLogin}
