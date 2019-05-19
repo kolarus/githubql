@@ -1,6 +1,6 @@
 import { HttpLink } from 'apollo-link-http';
 import { GITHUB_ACCESS_TOKEN, GITHUB_BASE_URL } from '../constants/constants';
-import { getToken } from './token-helper';
+import { getToken } from './tokenHelper';
 
 const httpLink = new HttpLink({
   uri: GITHUB_BASE_URL,

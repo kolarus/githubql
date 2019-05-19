@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
-import { Button, Icon, Input } from 'semantic-ui-react';
+import { Icon, Input } from 'semantic-ui-react';
 
-import { setToken } from '../../utils/token-helper';
+import { setToken } from '../../utils/tokenHelper';
 
 import style from './unauthorized.module.scss';
 
-const Unauthorized = (props) => {
-  const { history } = props;
+const Unauthorized = () => {
   const [tokenValue, setTokenValue] = useState('');
 
   return (
@@ -42,20 +40,8 @@ const Unauthorized = (props) => {
         onChange={(e, { value }) => setTokenValue(value)}
         placeholder="Enter your token"
       />
-      <Button
-        className={style.button}
-        primary
-        onClick={() => history.goBack()}
-      >
-        <Icon name="left chevron" />
-                Go back
-      </Button>
     </div>
   );
-};
-
-Unauthorized.propTypes = {
-  history: PropTypes.shape(Object).isRequired,
 };
 
 export default Unauthorized;

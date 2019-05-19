@@ -14,3 +14,15 @@ export const viewerShape = {
   name: PropTypes.string,
   login: PropTypes.string.isRequired,
 };
+
+export const repositoryShape = {
+  createdAt: PropTypes.string,
+  description: PropTypes.string,
+  url: PropTypes.string,
+  id: PropTypes.string,
+  isPrivate: PropTypes.bool,
+  viewerHasStarred: PropTypes.bool,
+  name: PropTypes.string,
+  primaryLanguage: PropTypes.shape(Object),
+  repositoryTopics: PropTypes.shape(Object),
+};

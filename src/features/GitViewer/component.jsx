@@ -5,7 +5,7 @@ import {
   Divider, Grid, Segment,
 } from 'semantic-ui-react';
 
-import { paginationShape } from '../../utils/shapes';
+import { paginationShape, repositoryShape } from '../../utils/shapes';
 
 import Search from '../../components/Search';
 import List from './components/List';
@@ -89,7 +89,9 @@ GitViewer.propTypes = {
   searchResults: PropTypes.arrayOf(PropTypes.shape(Object)),
   selectedRepo: PropTypes.shape(Object),
   selectedUserLogin: PropTypes.string,
-  viewingRepo: PropTypes.shape(Object),
+  viewingRepo: PropTypes.shape({
+    repository: PropTypes.shape(repositoryShape),
+  }),
   pagination: PropTypes.shape(paginationShape).isRequired,
 };
 

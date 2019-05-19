@@ -7,7 +7,8 @@ import { graphql, compose } from 'react-apollo';
 import { Image, Icon } from 'semantic-ui-react';
 
 import VIEWER from './Queries/VIEWER.gql';
-import { getToken, removeToken } from '../../utils/token-helper';
+
+import { getToken, removeToken } from '../../utils/tokenHelper';
 import { APP_TITLE } from '../../constants/constants';
 import { viewerShape } from '../../utils/shapes';
 

@@ -14,27 +14,27 @@ import destructurePageInfo from '../../../../utils/destructurePageInfo';
 const ListContainer = (props) => {
   const {
     reset,
-    data,
+    usersRepos,
   } = props;
 
-  if (!data || !data.user || reset) return <ListPlaceholder />;
-  if (data.error) return `Error! ${data.error.message}`;
+  if (!usersRepos || !usersRepos.user || reset) return <ListPlaceholder />;
+  if (usersRepos.error) return `Error! ${usersRepos.error.message}`;
 
   return (
     <List
       {...props}
-      fetchMore={data.fetchMore}
+      fetchMore={usersRepos.fetchMore}
     />
   );
 };
 
 ListContainer.propTypes = {
-  data: PropTypes.shape(Object),
+  usersRepos: PropTypes.shape(Object),
   reset: PropTypes.bool.isRequired,
 };
 
 ListContainer.defaultProps = {
-  data: null,
+  usersRepos: null,
 };
 
 const options = ({ selectedUserLogin, setCursors }) => ({
@@ -45,4 +45,5 @@ const options = ({ selectedUserLogin, setCursors }) => ({
 export default graphql(GET_USER_REPOS, {
   skip: props => !props.selectedUserLogin,
   options,
+  name: 'usersRepos',
 })(ListContainer);

@@ -6,6 +6,8 @@ import {
   Button, Icon, Label, Item,
 } from 'semantic-ui-react';
 
+import { repositoryShape } from '../../../../utils/shapes';
+
 const RepositoryInfo = (props) => {
   const {
     addStar,
@@ -88,7 +90,9 @@ RepositoryInfo.propTypes = {
   addStar: PropTypes.func.isRequired,
   removeStar: PropTypes.func.isRequired,
   updateStarState: PropTypes.func.isRequired,
-  viewingRepo: PropTypes.shape(Object).isRequired,
+  viewingRepo: PropTypes.shape({
+    repository: PropTypes.shape(repositoryShape),
+  }).isRequired,
 };
 
 export default RepositoryInfo;

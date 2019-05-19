@@ -11,14 +11,14 @@ import daysFormDate from '../../../../utils/daysFormDate';
 
 const List = (props) => {
   const {
-    data,
+    usersRepos,
     setSelectedRepo,
     onPageChange,
     pagination: { activePage },
     fetchMore,
   } = props;
 
-  const { user: { repositories: { totalCount, nodes: repositories } } } = data;
+  const { user: { repositories: { totalCount, nodes: repositories } } } = usersRepos;
 
   if (totalCount <= 0) {
     return <h2>No repositories found for selected user</h2>;
@@ -62,7 +62,7 @@ const List = (props) => {
 };
 
 List.propTypes = {
-  data: PropTypes.shape(Object).isRequired,
+  usersRepos: PropTypes.shape(Object).isRequired,
   setSelectedRepo: PropTypes.func.isRequired,
   onPageChange: PropTypes.func.isRequired,
   fetchMore: PropTypes.func.isRequired,
