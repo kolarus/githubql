@@ -6,7 +6,7 @@ import Pagination from '../../../../components/Pagination';
 
 const List = (props) => {
   const {
-    data, setSelectedRepo, onPageChange, activePage,
+    data, setSelectedRepo, onPageChange, pagination, fetchMore,
   } = props;
   return (
     <React.Fragment>
@@ -29,8 +29,10 @@ const List = (props) => {
         data.user.repositories.totalCount / 3 > 1
           ? (
             <Pagination
-              onPageChange={onPageChange}
-              activePage={activePage}
+              onPageChange={(e, { activePage: newActivePage }) => onPageChange(
+                newActivePage, fetchMore,
+              )}
+              activePage={pagination.activePage}
               totalPages={Math.ceil(data.user.repositories.totalCount / 3)}
             />
           )

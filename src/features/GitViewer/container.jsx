@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 
 import { Query } from 'react-apollo';
 import GitViewer from './component';
+
 import SEARCH_USER from './Queries/SEARCH_USER.gql';
+import NEXT_USER_REPOS from './Queries/NEXT_USER_REPOS.gql';
+import PREV_USER_REPOS from './Queries/PREV_USER_REPOS.gql';
+
+import { PAGINATION_DIRECTION } from '../../constants/constants';
 
 class GitViewerContainer extends React.Component {
   constructor(props) {
@@ -14,8 +19,16 @@ class GitViewerContainer extends React.Component {
       searchValue: '',
       userQuery: '',
       searchChangeTimeout: null,
-      fetchDirection: null,
-      activePage: 1,
+      viewingRepo: null,
+      selectedRepo: null,
+      pagination: {
+        fetchDirection: null,
+        activePage: 1,
+        startCursor: null,
+        endCursor: null,
+        hasPreviousPage: null,
+        hasNextPage: null,
+      },
       reset: true,
     };
 
@@ -35,6 +48,83 @@ class GitViewerContainer extends React.Component {
     this.setState({ searchValue: result.title, selectedUserLogin: result.login, reset: false });
   }
 
+  onPageChange(newActivePage, fetchMore) {
+    const { PREV, NEXT } = PAGINATION_DIRECTION;
+    const { pagination: { activePage, endCursor, startCursor }, selectedUserLogin } = this.state;
+    const fetchDirection = (activePage - newActivePage) > 0
+      ? PREV
+      : NEXT;
+
+    const variables = {
+      user: selectedUserLogin,
+      limit: 3,
+      cursor: fetchDirection === PREV ? startCursor : endCursor,
+    };
+
+    fetchMore({
+      query: fetchDirection === PREV
+        ? PREV_USER_REPOS
+        : NEXT_USER_REPOS,
+      variables,
+      notifyOnNetworkStatusChange: true,
+      updateQuery: (previousResult, { fetchMoreResult }) => ({ ...fetchMoreResult }),
+    });
+
+    this.setState(prevState => ({
+      pagination: {
+        ...prevState.pagination,
+        fetchDirection,
+        activePage: newActivePage,
+      },
+    }), () => console.log(this.state));
+  }
+
+  setSelectedRepo(selectedRepo) {
+    this.setState({ selectedRepo: { ...selectedRepo } });
+  }
+
+  setViewingRepo(data) {
+    this.setState({ viewingRepo: data });
+  }
+
+  getSearchResults(loading, data) {
+    return loading || !data
+      ? null
+      : data.search.edges.map(edge => ({ ...edge.node, title: edge.node.login }));
+  }
+
+  setCursors(startCursor, endCursor, hasNextPage, hasPreviousPage) {
+    this.setState(prevState => ({
+      pagination: {
+        ...prevState.pagination,
+        startCursor,
+        endCursor,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    }), () => console.log(this.state));
+  }
+
+  // updateStarState({ data: { addStar: { starrable } } }) {
+  updateStarState({ data }) {
+    const starrable = data.addStar
+      ? data.addStar.starrable
+      : data.removeStar.starrable;
+
+    this.setState(prevState => ({
+      viewingRepo: {
+        repository: {
+          ...prevState.viewingRepo.repository,
+          viewerHasStarred: starrable.viewerHasStarred,
+        },
+      },
+    }));
+  }
+
+  resetSearch() {
+    this.setState(this.initialState);
+  }
+
   applySearchAfterTimeout(searchValue) {
     return setTimeout(() => {
       if (searchValue.length < 1) {
@@ -47,28 +137,6 @@ class GitViewerContainer extends React.Component {
     }, 700);
   }
 
-  getSearchResults(loading, data) {
-    return loading || !data
-      ? null
-      : data.search.edges.map(edge => ({ ...edge.node, title: edge.node.login }));
-  }
-
-  resetSearch() {
-    this.setState({ searchValue: '', reset: true });
-  }
-
-  setSelectedRepo(selectedRepo) {
-    this.setState({ selectedRepo: { ...selectedRepo } });
-  }
-
-  onPageChange(newActivePage) {
-    const { activePage } = this.state;
-    const fetchDirection = (activePage - newActivePage) > 0
-      ? 'prev'
-      : 'next';
-    this.setState({ fetchDirection, activePage: newActivePage }, () => console.log(this.state));
-  }
-
   render() {
     const {
       searchValue,
@@ -76,9 +144,9 @@ class GitViewerContainer extends React.Component {
       searchPlaceholder,
       selectedUserLogin,
       selectedRepo,
-      fetchDirection,
-      activePage,
+      pagination,
       reset,
+      viewingRepo,
     } = this.state;
 
     return (
@@ -91,10 +159,13 @@ class GitViewerContainer extends React.Component {
           if (error) { return `Error! ${error.message}`; }
           return (
             <GitViewer
+              updateStarState={repoData => this.updateStarState(repoData)}
+              viewingRepo={viewingRepo}
+              setViewingRepo={repoData => this.setViewingRepo(repoData)}
               reset={reset}
-              onPageChange={(e, { activePage: newActivePage }) => this.onPageChange(newActivePage)}
-              fetchDirection={fetchDirection}
-              activePage={activePage}
+              onPageChange={(activePage, fetchMore) => this.onPageChange(activePage, fetchMore)}
+              setCursors={paginationInfo => this.setCursors(...paginationInfo)}
+              pagination={pagination}
               selectedUserLogin={selectedUserLogin}
               setSelectedRepo={newSelectedRepo => this.setSelectedRepo(newSelectedRepo)}
               selectedRepo={selectedRepo}

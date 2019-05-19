@@ -22,10 +22,13 @@ const GitViewer = (props) => {
     setSelectedRepo,
     selectedRepo,
     selectedUserLogin,
-    fetchDirection,
-    activePage,
+    pagination,
     onPageChange,
     reset,
+    setCursors,
+    setViewingRepo,
+    viewingRepo,
+    updateStarState,
   } = props;
   return (
     <React.Fragment>
@@ -43,9 +46,9 @@ const GitViewer = (props) => {
           <Grid.Column>
             <QueryList
               reset={reset}
+              setCursors={setCursors}
               onPageChange={onPageChange}
-              fetchDirection={fetchDirection}
-              activePage={activePage}
+              pagination={pagination}
               selectedUserLogin={selectedUserLogin}
               setSelectedRepo={setSelectedRepo}
               list={reposList}
@@ -54,6 +57,9 @@ const GitViewer = (props) => {
           </Grid.Column>
           <Grid.Column>
             <QueryRepositoryInfo
+              updateStarState={updateStarState}
+              viewingRepo={viewingRepo}
+              setViewingRepo={setViewingRepo}
               reset={reset}
               selectedRepo={selectedRepo}
             />

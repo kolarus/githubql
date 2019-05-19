@@ -1,3 +1,3 @@
-import QueryList from './QueryList';
+import ListContainer from './container';
 
-export default QueryList;
+export default ListContainer;

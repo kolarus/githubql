@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 const NEXT_USER_REPOS = gql`
-  query($user: String!, $limit: Int!, $endCursor: String!) {
+  query($user: String!, $limit: Int!, $cursor: String!) {
     user(login: $user) {
-        repositories(first: $limit, orderBy: {field: UPDATED_AT, direction: DESC, after: $endCursor}) {
+        repositories(first: $limit, orderBy: {field: UPDATED_AT, direction: DESC}, after: $cursor) {
             totalCount
             pageInfo {
                 endCursor
