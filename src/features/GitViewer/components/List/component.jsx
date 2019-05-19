@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { List as ListUI } from 'semantic-ui-react';
 import Pagination from '../../../../components/Pagination';
 
-import daysFormDate from '../../../../utils/daysFormDate';
 import { paginationShape } from '../../../../utils/shapes';
 import { REPOS_PER_PAGE } from '../../../../constants/constants';
+
+import daysFormDate from '../../../../utils/daysFormDate';
 
 const List = (props) => {
   const {

@@ -1,5 +1,8 @@
+/* eslint react/no-array-index-key: off */
 import React from 'react';
+
 import { List as ListUI, Placeholder } from 'semantic-ui-react';
+
 import { REPOS_PER_PAGE } from '../../../../constants/constants';
 
 const ListPlaceholder = () => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { graphql, compose } from 'react-apollo';
 
@@ -6,9 +7,9 @@ import RepositoryInfoPlaceholder from './RepositoryInfoPlaceholder';
 
 import GET_REPO_INFO from '../../Queries/GET_REPO_INFO.gql';
 import ADD_STAR from '../../Mutations/ADD_STAR.gql';
+import REMOVE_STAR from '../../Mutations/REMOVE_STAR.gql';
 
 import RepositoryInfo from './component';
-import REMOVE_STAR from '../../Mutations/REMOVE_STAR.gql';
 
 const RepositoryInfoContainer = (props) => {
   const { data, viewingRepo } = props;
@@ -32,6 +33,16 @@ const mutationOptions = ({ data }) => ({
       : null,
   },
 });
+
+RepositoryInfoContainer.propTypes = {
+  data: PropTypes.shape(Object),
+  viewingRepo: PropTypes.shape(Object),
+};
+
+RepositoryInfoContainer.defaultProps = {
+  data: null,
+  viewingRepo: null,
+};
 
 export default compose(
   graphql(GET_REPO_INFO, { skip: props => !props.selectedRepo, options }),

@@ -1,4 +1,6 @@
+/* eslint jsx-a11y/label-has-for: off */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Button, Icon, Label, Item,
@@ -80,6 +82,13 @@ const RepositoryInfo = (props) => {
       </Item>
     </Item.Group>
   );
+};
+
+RepositoryInfo.propTypes = {
+  addStar: PropTypes.func.isRequired,
+  removeStar: PropTypes.func.isRequired,
+  updateStarState: PropTypes.func.isRequired,
+  viewingRepo: PropTypes.shape(Object).isRequired,
 };
 
 export default RepositoryInfo;

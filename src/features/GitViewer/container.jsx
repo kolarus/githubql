@@ -13,6 +13,12 @@ import getFetchDirection from '../../utils/getFetchDirection';
 
 
 class GitViewerContainer extends React.Component {
+  static getSearchResults(loading, data) {
+    return loading || !data
+      ? null
+      : data.search.edges.map(edge => ({ ...edge.node, title: edge.node.login }));
+  }
+
   constructor(props) {
     super(props);
 
@@ -87,12 +93,6 @@ class GitViewerContainer extends React.Component {
 
   setViewingRepo(data) {
     this.setState({ viewingRepo: data });
-  }
-
-  getSearchResults(loading, data) {
-    return loading || !data
-      ? null
-      : data.search.edges.map(edge => ({ ...edge.node, title: edge.node.login }));
   }
 
   setCursors(startCursor, endCursor, hasNextPage, hasPreviousPage) {
@@ -177,7 +177,7 @@ class GitViewerContainer extends React.Component {
               searchValue={searchValue}
               onSearchChange={(e, newSearchValue) => this.onSearchChange(newSearchValue)}
               onResultSelect={(e, { result }) => this.onResultSelect(result)}
-              searchResults={this.getSearchResults(loading, data)}
+              searchResults={GitViewerContainer.getSearchResults(loading, data)}
             />
           );
         }}

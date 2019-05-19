@@ -8,3 +8,9 @@ export const paginationShape = {
   hasPreviousPage: PropTypes.bool,
   hasNextPage: PropTypes.bool,
 };
+
+export const viewerShape = {
+  avatarUrl: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  login: PropTypes.string.isRequired,
+};

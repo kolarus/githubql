@@ -1,11 +1,15 @@
 import React from 'react';
-
-import { graphql } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { graphql } from 'react-apollo';
+
 import { Image, Icon } from 'semantic-ui-react';
-import { getToken, removeToken } from '../../utils/token-helper';
+
 import VIEWER from './Queries/VIEWER.gql';
+import { getToken, removeToken } from '../../utils/token-helper';
+import { viewerShape } from '../../utils/shapes';
+
 import style from './header.module.scss';
 
 const Header = (props) => {
@@ -48,6 +52,16 @@ const Header = (props) => {
         }
     </header>
   );
+};
+
+Header.propTypes = {
+  user: PropTypes.shape({
+    viewer: PropTypes.shape(viewerShape),
+  }),
+};
+
+Header.defaultProps = {
+  user: {},
 };
 
 export default graphql(VIEWER, { name: 'user' })(Header);

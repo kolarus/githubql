@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Icon, Input } from 'semantic-ui-react';
-import style from './unauthorized.module.scss';
 
 import { setToken } from '../../utils/token-helper';
+
+import style from './unauthorized.module.scss';
 
 const Unauthorized = (props) => {
   const { history } = props;
@@ -14,13 +15,13 @@ const Unauthorized = (props) => {
     <div className={style.msg}>
       <h1>Please provide valid github personal access token!</h1>
       <h3>
-                See
+          See
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://github.com/kolarus/githubql/blob/master/README.md"
         >
-                    README
+            README
         </a>
           for more info or provide you token for current session via input below and click unlock
       </h3>
