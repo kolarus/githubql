@@ -1,14 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Query } from 'react-apollo';
+
 import GitViewer from './component';
 
 import SEARCH_USER from './Queries/SEARCH_USER.gql';
 import NEXT_USER_REPOS from './Queries/NEXT_USER_REPOS.gql';
 import PREV_USER_REPOS from './Queries/PREV_USER_REPOS.gql';
 
-import { PAGINATION_DIRECTION } from '../../constants/constants';
+import { PAGINATION_DIRECTION, REPOS_PER_PAGE } from '../../constants/constants';
+import getFetchDirection from '../../utils/getFetchDirection';
+
 
 class GitViewerContainer extends React.Component {
   constructor(props) {
@@ -21,13 +23,9 @@ class GitViewerContainer extends React.Component {
       searchChangeTimeout: null,
       viewingRepo: null,
       selectedRepo: null,
+      selectedUserLogin: null,
       pagination: {
-        fetchDirection: null,
         activePage: 1,
-        startCursor: null,
-        endCursor: null,
-        hasPreviousPage: null,
-        hasNextPage: null,
       },
       reset: true,
     };
@@ -37,46 +35,50 @@ class GitViewerContainer extends React.Component {
 
   onSearchChange({ value: searchValue }) {
     const { searchChangeTimeout } = this.state;
-    clearTimeout(searchChangeTimeout);
 
+    clearTimeout(searchChangeTimeout);
     const searchTimeout = this.applySearchAfterTimeout(searchValue);
 
     this.setState({ searchValue, searchChangeTimeout: searchTimeout });
   }
 
-  onResultSelect(result) {
-    this.setState({ searchValue: result.title, selectedUserLogin: result.login, reset: false });
+  onResultSelect({ title, login }) {
+    const { pagination, selectedRepo } = this.initialState;
+    this.setState((prevState) => {
+      if (prevState.selectedUserLogin === login) {
+        return prevState;
+      }
+
+      return {
+        pagination,
+        selectedRepo,
+        searchValue: title,
+        selectedUserLogin: login,
+        reset: false,
+      };
+    });
   }
 
   onPageChange(newActivePage, fetchMore) {
-    const { PREV, NEXT } = PAGINATION_DIRECTION;
+    const { PREV } = PAGINATION_DIRECTION;
     const { pagination: { activePage, endCursor, startCursor }, selectedUserLogin } = this.state;
-    const fetchDirection = (activePage - newActivePage) > 0
-      ? PREV
-      : NEXT;
 
-    const variables = {
-      user: selectedUserLogin,
-      limit: 3,
-      cursor: fetchDirection === PREV ? startCursor : endCursor,
-    };
+    const fetchDirection = getFetchDirection(activePage, newActivePage);
+    const cursor = fetchDirection === PREV ? startCursor : endCursor;
 
     fetchMore({
-      query: fetchDirection === PREV
-        ? PREV_USER_REPOS
-        : NEXT_USER_REPOS,
-      variables,
-      notifyOnNetworkStatusChange: true,
+      query: fetchDirection === PREV ? PREV_USER_REPOS : NEXT_USER_REPOS,
+      variables: { user: selectedUserLogin, limit: REPOS_PER_PAGE, cursor },
       updateQuery: (previousResult, { fetchMoreResult }) => ({ ...fetchMoreResult }),
+    }).then(() => {
+      this.setState(prevState => ({
+        pagination: {
+          ...prevState.pagination,
+          fetchDirection,
+          activePage: newActivePage,
+        },
+      }));
     });
-
-    this.setState(prevState => ({
-      pagination: {
-        ...prevState.pagination,
-        fetchDirection,
-        activePage: newActivePage,
-      },
-    }), () => console.log(this.state));
   }
 
   setSelectedRepo(selectedRepo) {
@@ -102,10 +104,9 @@ class GitViewerContainer extends React.Component {
         hasNextPage,
         hasPreviousPage,
       },
-    }), () => console.log(this.state));
+    }));
   }
 
-  // updateStarState({ data: { addStar: { starrable } } }) {
   updateStarState({ data }) {
     const starrable = data.addStar
       ? data.addStar.starrable
@@ -153,10 +154,11 @@ class GitViewerContainer extends React.Component {
       <Query
         query={SEARCH_USER}
         variables={{ user: userQuery }}
-        skip={!userQuery}
+        skip={(!userQuery && !reset)}
       >
         {({ loading, error, data }) => {
           if (error) { return `Error! ${error.message}`; }
+
           return (
             <GitViewer
               updateStarState={repoData => this.updateStarState(repoData)}

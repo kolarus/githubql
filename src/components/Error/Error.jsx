@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import style from '../Unauthorized/unauthorized.module.scss';
 
@@ -25,6 +26,16 @@ const Error = (props) => {
       </h2>
     </div>
   );
+};
+
+Error.propTypes = {
+  error: PropTypes.shape(Object),
+  location: PropTypes.shape(Object),
+};
+
+Error.defaultProps = {
+  error: null,
+  location: null,
 };
 
 export default Error;

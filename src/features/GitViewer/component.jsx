@@ -1,12 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Divider, Grid, Segment,
 } from 'semantic-ui-react';
 
+import { paginationShape } from '../../utils/shapes';
+
 import Search from '../../components/Search';
-import QueryList from './components/List';
-import QueryRepositoryInfo from './components/RepositoryInfo';
+import List from './components/List';
+import RepositoryInfo from './components/RepositoryInfo';
 
 const GitViewer = (props) => {
   const {
@@ -17,7 +20,6 @@ const GitViewer = (props) => {
     searchResults,
     searchPlaceholder,
     reposLoading,
-    reposList,
     resetSearch,
     setSelectedRepo,
     selectedRepo,
@@ -44,19 +46,18 @@ const GitViewer = (props) => {
       <Segment>
         <Grid columns={2} relaxed="very">
           <Grid.Column>
-            <QueryList
+            <List
               reset={reset}
               setCursors={setCursors}
               onPageChange={onPageChange}
               pagination={pagination}
               selectedUserLogin={selectedUserLogin}
               setSelectedRepo={setSelectedRepo}
-              list={reposList}
               loading={reposLoading}
             />
           </Grid.Column>
           <Grid.Column>
-            <QueryRepositoryInfo
+            <RepositoryInfo
               updateStarState={updateStarState}
               viewingRepo={viewingRepo}
               setViewingRepo={setViewingRepo}
@@ -69,6 +70,36 @@ const GitViewer = (props) => {
       </Segment>
     </React.Fragment>
   );
+};
+
+GitViewer.propTypes = {
+  searchLoading: PropTypes.bool,
+  searchValue: PropTypes.string.isRequired,
+  onSearchChange: PropTypes.func.isRequired,
+  onResultSelect: PropTypes.func.isRequired,
+  setCursors: PropTypes.func.isRequired,
+  setViewingRepo: PropTypes.func.isRequired,
+  updateStarState: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  resetSearch: PropTypes.func.isRequired,
+  searchPlaceholder: PropTypes.string.isRequired,
+  setSelectedRepo: PropTypes.func.isRequired,
+  reposLoading: PropTypes.bool,
+  reset: PropTypes.bool.isRequired,
+  searchResults: PropTypes.arrayOf(PropTypes.shape(Object)),
+  selectedRepo: PropTypes.shape(Object),
+  selectedUserLogin: PropTypes.string,
+  viewingRepo: PropTypes.shape(Object),
+  pagination: PropTypes.shape(paginationShape).isRequired,
+};
+
+GitViewer.defaultProps = {
+  searchLoading: false,
+  reposLoading: false,
+  selectedRepo: null,
+  viewingRepo: null,
+  selectedUserLogin: null,
+  searchResults: [],
 };
 
 export default GitViewer;

@@ -10,13 +10,15 @@ const unauthorizedError = onError(({ graphQLErrors, networkError }) => {
     toast.error(<UnauthorizedToast />, {
       position: toast.POSITION.TOP_RIGHT,
     });
+
     history.push('/unauthorized');
     return;
   }
 
-  history.push('/error', {
-    error: networkError || graphQLErrors[0],
-  });
+  const error = networkError || graphQLErrors[0];
+  history.push('/error', { error });
+
+  toast.error(error.message);
 });
 
 export default unauthorizedError;

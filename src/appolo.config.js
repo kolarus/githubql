@@ -7,12 +7,12 @@ const cache = new InMemoryCache();
 
 const defaultOptions = {
   watchQuery: {
-    fetchPolicy: 'network-only',
-    //fetchPolicy: 'cache-and-network',
+    //fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   },
   query: {
-    fetchPolicy: 'network-only',
-    //fetchPolicy: 'cache-and-network',
+    //fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   },
 };
 

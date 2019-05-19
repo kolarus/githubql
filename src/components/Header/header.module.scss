@@ -1,9 +1,11 @@
 @import '../../constants/vars';
 
 $header-margin-bottom: 20px;
+
 .header {
+  padding: 0 50px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: calc(#{$header-height} - #{$header-margin-bottom});
   margin-bottom: $header-margin-bottom;

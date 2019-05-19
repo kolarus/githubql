@@ -1,5 +1,4 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 
 import {
   Button, Icon, Label, Item,
@@ -7,11 +6,21 @@ import {
 
 const RepositoryInfo = (props) => {
   const {
-    data, addStar, removeStar, setViewingRepo, viewingRepo: { repository }, updateStarState,
+    addStar,
+    removeStar,
+    viewingRepo: { repository },
+    updateStarState,
   } = props;
-  console.log(props);
+
   const {
-    url, name, isPrivate, viewerHasStarred, id,
+    url,
+    name,
+    isPrivate,
+    viewerHasStarred,
+    id,
+    description,
+    primaryLanguage,
+    repositoryTopics: { nodes: topics },
   } = repository;
   return (
     <Item.Group divided>
@@ -28,9 +37,13 @@ const RepositoryInfo = (props) => {
             </sup>
           </Item.Header>
           <Item.Meta>
-            <span className="cinema">IFC Cinema</span>
+            <span className="cinema">{ description }</span>
           </Item.Meta>
-          <Item.Description>Repository description</Item.Description>
+          <Item.Description>
+            Primary language:
+            {' '}
+            { (primaryLanguage && primaryLanguage.name) || 'none' }
+          </Item.Description>
           <Item.Extra>
             <Button
               primary
@@ -45,24 +58,23 @@ const RepositoryInfo = (props) => {
             <Button
               primary
               floated="right"
-              // disabled={viewerHasStarred}
-              onClick={() => {
-                const result = !viewerHasStarred
-                  ? addStar(id).then(updateStarState)
-                  : removeStar(id).then(updateStarState);
-
-                result.catch(e => toast(e.message));
-              }}
+              onClick={() => (!viewerHasStarred
+                ? addStar(id).then(updateStarState)
+                : removeStar(id).then(updateStarState))
+              }
             >
               {
                 repository.viewerHasStarred
-                  ? 'Unstar'
-                  : 'Star'
+                  ? 'Unstar '
+                  : 'Star '
               }
-              <Icon name="right star" />
+              <Icon corner="top right" name="star" />
             </Button>
-            <Label>Label</Label>
-            <Label>Label2</Label>
+            {
+              topics.map(({ topic }) => (
+                <Label key={topic.id}>{ topic.name }</Label>
+              ))
+            }
           </Item.Extra>
         </Item.Content>
       </Item>

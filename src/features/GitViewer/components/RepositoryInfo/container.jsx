@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { graphql, compose } from 'react-apollo';
+
+import RepositoryInfoPlaceholder from './RepositoryInfoPlaceholder';
+
 import GET_REPO_INFO from '../../Queries/GET_REPO_INFO.gql';
 import ADD_STAR from '../../Mutations/ADD_STAR.gql';
 
@@ -11,7 +14,7 @@ const RepositoryInfoContainer = (props) => {
   const { data, viewingRepo } = props;
 
   if (!data || !viewingRepo) return null;
-  if (data.loading) return 'Loading';
+  if (data.loading) return <RepositoryInfoPlaceholder />;
   if (data.error) return `Error! ${data.error.message}`;
 
   return (<RepositoryInfo {...props} />);

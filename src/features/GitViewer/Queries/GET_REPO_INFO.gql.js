@@ -7,7 +7,20 @@ const GET_REPO_INFO = gql`
         name
         url
         viewerHasStarred
-        isPrivate,
+        isPrivate
+        description 
+        createdAt
+        primaryLanguage {
+            name
+        }
+        repositoryTopics(first: 3) {
+            nodes {
+                topic {
+                    id
+                    name
+                }
+            }
+        }
     }
   }`;
 
