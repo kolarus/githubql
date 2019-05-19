@@ -2,12 +2,12 @@ import React from 'react';
 
 import { ToastContainer } from 'react-toastify';
 
-import { toastifyTimeout } from '../../constants/constants';
+import { TOASTIFY_TIMEOUT } from '../../constants/constants';
 
 const Toastify = () => (
   <ToastContainer
     position="top-right"
-    autoClose={toastifyTimeout}
+    autoClose={TOASTIFY_TIMEOUT}
     hideProgressBar
     newestOnTop={false}
     closeOnClick

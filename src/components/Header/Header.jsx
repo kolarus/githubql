@@ -2,15 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 import { Image, Icon } from 'semantic-ui-react';
 
 import VIEWER from './Queries/VIEWER.gql';
 import { getToken, removeToken } from '../../utils/token-helper';
+import { APP_TITLE } from '../../constants/constants';
 import { viewerShape } from '../../utils/shapes';
 
 import style from './header.module.scss';
+import withTitle from '../WithTitle';
 
 const Header = (props) => {
   const { user: { viewer } } = props;
@@ -64,4 +66,7 @@ Header.defaultProps = {
   user: {},
 };
 
-export default graphql(VIEWER, { name: 'user' })(Header);
+export default compose(
+  graphql(VIEWER, { name: 'user' }),
+  withTitle(APP_TITLE),
+)(Header);

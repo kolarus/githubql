@@ -1,5 +1,6 @@
-export const toastifyTimeout = 5000;
+export const TOASTIFY_TIMEOUT = 5000;
 
+export const APP_TITLE = 'githubql - tech task';
 export const GITHUB_BASE_URL = 'https://api.github.com/graphql';
 
 export const PAGINATION_DIRECTION = {
