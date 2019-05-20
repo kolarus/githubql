@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
 
 import { setToken } from '../../utils/tokenHelper';
+import tokenValidation from '../../utils/tokenValidation';
 
 import style from './unauthorized.module.scss';
+
 
 const Unauthorized = () => {
   const [tokenValue, setTokenValue] = useState('');
@@ -37,7 +39,11 @@ const Unauthorized = () => {
           />
         )}
         value={tokenValue}
-        onChange={(e, { value }) => setTokenValue(value)}
+        onChange={(e, { value }) => {
+          setTokenValue(value
+            ? tokenValidation(value) || tokenValue
+            : '');
+        }}
         placeholder="Enter your token"
       />
     </div>
