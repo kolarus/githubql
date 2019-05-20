@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { Query } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 import GitViewer from './component';
-
-import SEARCH_USER from './Queries/SEARCH_USER.gql';
-import NEXT_USER_REPOS from './Queries/NEXT_USER_REPOS.gql';
-import PREV_USER_REPOS from './Queries/PREV_USER_REPOS.gql';
 
 import { PAGINATION_DIRECTION, REPOS_PER_PAGE } from '../../constants/constants';
 import getFetchDirection from '../../utils/getFetchDirection';
 
+const NEXT_USER_REPOS = loader('./Queries/NEXT_USER_REPOS.gql');
+const PREV_USER_REPOS = loader('./Queries/PREV_USER_REPOS.gql');
+const SEARCH_USER = loader('./Queries/SEARCH_USER.gql');
 
 class GitViewerContainer extends React.Component {
   static getSearchResults(loading, data) {

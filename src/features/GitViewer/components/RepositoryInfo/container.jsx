@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { graphql, compose } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 import RepositoryInfoPlaceholder from './RepositoryInfoPlaceholder';
-
-import GET_REPO_INFO from '../../Queries/GET_REPO_INFO.gql';
-import ADD_STAR from '../../Mutations/ADD_STAR.gql';
-import REMOVE_STAR from '../../Mutations/REMOVE_STAR.gql';
-
 import RepositoryInfo from './component';
+
+const ADD_STAR = loader('../../Mutations/ADD_STAR.gql');
+const REMOVE_STAR = loader('../../Mutations/REMOVE_STAR.gql');
+const GET_REPO_INFO = loader('../../Queries/GET_REPO_INFO.gql');
 
 const RepositoryInfoContainer = (props) => {
   const { data, viewingRepo } = props;

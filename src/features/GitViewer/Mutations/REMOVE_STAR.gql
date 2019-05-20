@@ -1,0 +1,8 @@
+mutation($id: ID!) {
+    removeStar(input: {starrableId: $id}) {
+        clientMutationId
+        starrable {
+            viewerHasStarred
+        }
+    }
+}

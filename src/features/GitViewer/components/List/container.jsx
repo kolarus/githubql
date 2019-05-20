@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { graphql } from 'react-apollo';
+import { loader } from 'graphql.macro';
 
 import ListPlaceholder from './ListPlaceholder';
 import List from './component';
 
-import GET_USER_REPOS from '../../Queries/GET_USER_REPOS.gql';
 import { REPOS_PER_PAGE } from '../../../../constants/constants';
 
 import destructurePageInfo from '../../../../utils/destructurePageInfo';
+
+const GET_USER_REPOS = loader('../../Queries/GET_USER_REPOS.gql');
 
 const ListContainer = (props) => {
   const {
